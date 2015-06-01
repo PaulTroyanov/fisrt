@@ -2,6 +2,15 @@
 	include('library/db.php');
 	$user = getUser($_GET['email'], getConnect());
 
+	if(isset($_POST) && strlen($_POST['login']) == 0)
+		$_POST['login'] = $user['name'];
+
+	if(strlen($_POST['email']) == 0)
+		$_POST['email'] = $user['email'];
+
+	if(strlen($_POST['password']) == 0)
+		$_POST['password'] == $user['password'];
+
 	if(!empty($_POST) && strlen($_POST['login']) > 1){
 		updateUser($_POST['login'], $_POST['email'], $_POST['password'], $_GET['email'], getConnect());
 		header('Location: createUser.php');
