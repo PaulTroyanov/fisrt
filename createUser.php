@@ -1,20 +1,31 @@
 <?php
 	include('library/db.php');
+	include('log.html');
 
-	if(!empty($_POST) && strlen($_POST['login']) > 1){
-		createUser($_POST['login'], $_POST['email'], $_POST['password'], getConnect());
+	if(isset($_POST['sub'])){
+		switch($_POST['sub']){
+			
+			case 'Log in':
+				if(!empty($_POST['email']) && !empty($_POST['password'])){
+					$user = getUser($_POST['email'], getConnect());
+					if($user){
+						header('Location: /userList.php');
+						exit();
+					}
+		
+					break;
+
+				}
+
+			case 'Registrate':
+				include('reg.html');
+				break;
+
+			case 'Create user':
+
+				if(!empty($_POST['password']) && !empty($_POST['email']))
+					createUser($_POST['email'], $_POST['password'], getConnect());
+				break;
+		}
 	}
 ?>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-
-	<center style='margin-top:100px'>
-	<form method='POST'>
-
-	<p>Login:<input name='login'></p>
-	<p>Email:<input name='email'></p>
-	<p>Password:<input type='password' name='password'></p>
-	<p><input type='submit' value='Create user' class="btn btn-primary"></p>
-	</form>
-	<?php include('userList.php'); ?>
-	</center>
-

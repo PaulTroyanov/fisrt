@@ -17,17 +17,17 @@
 		return $result;
 	}
 
-	function createUser($name, $email, $password, $db){
-		$query = $db->prepare("INSERT INTO user (name, email, password, date_create) VALUES (:name, :email, :password, now())");
-		$query->bindParam(':name', $name, PDO::PARAM_STR);
+	function createUser($email, $password, $db){
+		$query = $db->prepare("INSERT INTO user (email, password, date_create) VALUES (:email, password(:password), now())");
+	
 		$query->bindParam(':email', $email, PDO::PARAM_STR);
 		$query->bindParam(':password', $password, PDO::PARAM_STR);
 		$query->execute();
 	}
 
-	function updateUser($name, $email, $password, $oEmail, $db){
-		$query = $db->prepare("UPDATE `user` SET `name` =:name, `email` = :email, `password` = :password WHERE `email` = :oEmail");
-		$query->bindParam(':name', $name, PDO::PARAM_STR);
+	function updateUser($email, $password, $oEmail, $db){
+		$query = $db->prepare("UPDATE `user` SET `email` = :email, `password` = password(:password) WHERE `email` = :oEmail");
+		
 		$query->bindParam(':email', $email, PDO::PARAM_STR);
 		$query->bindParam(':oEmail', $oEmail, PDO::PARAM_STR);
 		$query->bindParam(':password', $password, PDO::PARAM_STR);
